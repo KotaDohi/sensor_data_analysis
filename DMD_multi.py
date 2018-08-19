@@ -47,9 +47,17 @@ class DMD(object):
         contri=Sig/sum(Sig)*100
         total = pd.DataFrame(np.vstack([freq,b,mu,contri,eta]).T,columns=['freq','b','eig','contribution','eta']).sort_values(by='contribution',ascending=False)     
         self.total = total
-        #print(total['eta'][0])
-        return (total['eta'][0],total['freq'][0])
-
+        
+        #totalの表の中から周波数０以外で、もっともbの高いモードをとってくる
+        output = total
+        output = output[output.freq>0]
+        output = output.sort_values(by='b',ascending=False)
+        print(output)
+        output1 = output.iloc[0]['eta']
+        output2 = output.iloc[0]['freq']
+        return (output1,output2)
+    
+    
     def main(self):
         start_at = self.ncol
         end_at = len(self.data.T) + 1

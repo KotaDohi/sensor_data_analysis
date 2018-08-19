@@ -56,9 +56,8 @@ lst_tags = ['7CT3369C.PV','7CT3369D.PV']
 ntags = len(lst_tags)
 
 # プロット期間の最初の日時
-dt_beg = dt.datetime(2017,8,29)
-#dt_beg = df_merged.index[0]
 
+dt_beg = dt.datetime(2017,8,29)
 trial = 0
 
 while True:
@@ -88,18 +87,25 @@ while True:
     # 次の開始時刻
     dt_beg = dt_end
 
-data = df_merged[dt.datetime(2017,8,28):dt.datetime(2017,9,5)]['7CT3369D.PV']
+data = df_merged[dt.datetime(2017,8,2):dt.datetime(2017,8,9)]['7CT3369C.PV']
 data = data.fillna(method='ffill')
 data = data.fillna(method='bfill')
 data = list(data)
 
-import SSA 
-a = SSA.SSA(data,w=5,lag=10,ncol_h=20,ncol_t=20,ns_h=1,ns_t=1)
-a.main()
 
-import DMD_single
-a = DMD_single.DMD(data,w=100,r=5,ncol=20,fs=1)
-res,total = a.main()
+#import SSA 
+#a = SSA.SSA(data,w=50,lag=10,ncol_h=20,ncol_t=20,ns_h=1,ns_t=1)
+#a.main()
+#
+#
+#import DMD_single
+#w=25
+#r=5
+#
+#ncol=int(0.25*w)
+#fs=1
+#a = DMD_single.DMD(data,w,r,ncol,fs)
+#res,total = a.main()
 
 #import SPDMD
 #a = SPDMD.SPDMD(data,w=100,r=10,ncol=20)

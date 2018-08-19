@@ -18,17 +18,18 @@ y = np.sin(fs*t*np.pi*2)*np.exp(-2*t)+noise
 plt.plot(t,y)
 
 import DMD_single
-w = 800
+w = 780
 r = 10
 ncol = int(0.25*w)
-a = DMD_single.DMD(y,w,r,ncol,1.0/dt)
+#a = DMD_single.DMD(y,w,r,ncol,1.0/dt)
+#res,total = a.main()
+
+
+import SPDMD
+a = SPDMD.SPDMD(y,w,r,ncol,1.0/dt)
 res,total = a.main()
 
-
-#import SPDMD
-#a = SPDMD.SPDMD(y,w,r,ncol,1.0/dt)
-#res,total = a.main()
-#
-print(res,total)
+print(total)
+print(res)
 
 

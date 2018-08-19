@@ -64,7 +64,7 @@ class SPDMD(object):
         q = np.conj(diag(dot(dot(Vand, (dot(dot(U, diag(sv)), Vh)).conj().T), Phi)))
         s = norm(diag(sv), ord='fro')**2
 #change here         
-        gamma_vec = np.logspace(np.log10(0.05), np.log10(1000), 3)
+        gamma_vec = np.logspace(np.log10(0.05), np.log10(1000), 2)
         answer = self.admm_for_dmd(P, q, s, gamma_vec)
 #change here
         b = answer.xpol[:,0]
@@ -78,15 +78,16 @@ class SPDMD(object):
         total = pd.DataFrame(np.vstack([freq,b,mu,contri,eta]).T,columns=['freq','b','eig','contribution','eta']).sort_values(by='contribution',ascending=False)     
         self.total = total
         
-        #totalの表の中から周波数０以外で、もっとも寄与率の高いモードをとってくる
+        #totalの表の中から周波数０以外で、もっともbの高いモードをとってくる
         output = total
         output = output[output.freq>0]
 #        output['eta'] = abs(output['eta'])
-        output = output.sort_values(by='contribution',ascending=False)
+        output = output.sort_values(by='b',ascending=False)
         output1 = output.iloc[0]['eta']
         output2 = output.iloc[0]['freq']
         return (output1,output2)
-
+    
+    
     def admm_for_dmd(self,P, q, s, gamma_vec, rho=1, maxiter=10000, eps_abs=1e-6, eps_rel=1e-4):
     
         # blank return value

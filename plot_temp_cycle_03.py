@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 15 18:40:26 2018
-
-@author: Dohi
-"""
-
 # -*- coding: utf-8 -*-
 """
 Created on Tue Aug  7 11:47:50 2018
@@ -59,58 +51,25 @@ else:
     print('Original data has already been read')
 
 #プロットする変数
-lst_tags = ['7CT3369C.PV','7CT3369D.PV']
-#lst_tags = df_merged.columns[200:300]
+lst_tags = ['7CT3369D.PV','7CAC3383.PV']
+
 ntags = len(lst_tags)
 
 # プロット期間の最初の日時
-dt_beg = dt.datetime(2017,8,29)
-#dt_beg = df_merged.index[0]
+week = 1
+dt_begin = dt.datetime(2017,8,29)
 
-trial = 0
-
-while True:
-#for i in range(10):
-    # データの最終日時に達したら終了
-    if dt_beg > df_merged.index[-1]:
-        print('Reached the end')
-        break
+for week in range(week):
+    dt_beg = dt_begin - relativedelta(weeks=week)
+    
     # プロットの最後の日時(1週間後)
     dt_end = dt_beg + relativedelta(weeks=1)
-    # データが存在する場合
-    if df_merged[dt_beg:dt_end][lst_tags].notnull().sum().all():
-        # プロット
-        plt.figure(num=1,figsize=(16,10))
-        plt.clf()
-        f,axs = plt.subplots(ntags,sharex=True,num=1)
-        for j in range(ntags):
-            axs[j].plot(df_merged[dt_beg:dt_end][lst_tags[j]])
-            axs[j].set_ylabel(lst_tags[j],fontsize=14)
-            axs[j].tick_params(labelsize=14)
-        trial+=1
-        print("trials",trial)
-        if save_fig:
-            fn_png = '_'.join(lst_tags) + dt_beg.to_pydatetime().strftime('%Y%m%d') + '.png'
-            plt.savefig(os.path.join(dir_res,fn_png))
-        #plt.pause(1)
-    # 次の開始時刻
-    dt_beg = dt_end
-
-data = df_merged[dt.datetime(2017,8,28):dt.datetime(2017,9,5)][:]
-data = data.fillna(method='ffill')
-data = data.fillna(method='bfill')
-data = data.dropna(how='all', axis=1)
-data_sp = data[:]['7CT3369D.PV']
-data = np.array(data).T
-"""
-import SSA 
-a = SSA.SSA(data,w=5,lag=10,ncol_h=20,ncol_t=20,ns_h=1,ns_t=1)
-a.main()
-
-import DMD_single
-a = DMD_single.DMD(data,w=100,r=10,ncol=20)
-res,total = a.main()"""
-import DMD_multi
-a = DMD_multi.DMD(data,data_sp,r=10,ncol=100)
-res,total = a.main()
+    plt.figure(num=1,figsize=(16,10))
+    plt.clf()
+    f,axs = plt.subplots(ntags,sharex=True,num=1)
+    for j in range(ntags):
+        axs[j].plot(df_merged[dt_beg:dt_end][lst_tags[j]])
+        axs[j].set_ylabel(lst_tags[j],fontsize=14)
+        axs[j].tick_params(labelsize=14)
+    
 

@@ -70,9 +70,9 @@ class DMD(object):
         
         #totalの表の中から周波数０以外で、もっともbの高いモードをとってくる
         output = total
-        output = output[output.freq>0]
-#        output['eta'] = abs(output['eta'])
-        output = output.sort_values(by='b',ascending=False)
+#        output = output[output.freq>0]
+        output['eta'] = abs(output['eta'])
+        output = output.sort_values(by='eta',ascending=False)
         output1 = output.iloc[0]['eta']
         output2 = output.iloc[0]['freq']
         return (output1,output2)
